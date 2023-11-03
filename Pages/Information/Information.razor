@@ -1,0 +1,487 @@
+@page "/debt/information"
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@inject IJSRuntime jsRuntime
+@inject HttpClient httpClient
+
+@using System.Linq.Dynamic.Core
+<style>
+    .icon-search {
+        display: inline-flex !important;
+        justify-content: space-evenly !important;
+        align-items: center !important;
+        position: relative !important;
+        top: 3px !important;
+        padding: 15px !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .mt-5 {
+        margin-top: 4rem !important;
+    }
+
+    .overlay {
+        @* transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%; *@
+        width: 100%;
+        min-height: 50vh;
+        position: relative;
+        @* background-color: lightcoral; *@
+    }
+
+    .child {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+    }
+</style>
+<div class="header-page mt-5">
+    <h4>ระบบ การซิงค์ข้อมูลหุ้นหนี้ - ข้อมูลหุ้น</h4>
+</div>
+<div class="card mt-3">
+    <div class="row" style="margin-left: calc(var(--bs-gutter-x) * .5);margin-bottom: 15px;">
+        <div class="row">
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <label class="form-label" for="">วันที่ผ่านรายการ</label>
+                <div class="form-group ">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="deptaccount_no" @bind="deptaccount_no">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <label class="form-label" for="">เลือกประเภทรายการ</label>
+                <select id="recppaytypeSelect" class="form-select" aria-label="Default select example">
+                    <option value="cash_type">recppaytype_desc</option>
+                </select>
+            </div>
+            <div class="col-xl-2 col-md-4col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" @onclick="Search">ดึงข้อมูล</button>
+            </div>
+            <div class="col-xl-2 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" @onclick="Search">ผ่านรายการ</button>
+            </div>
+            <div class="col-xl-1 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" @onclick="Search">commit</button>
+            </div>
+            <div class="col-xl-1 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" @onclick="Search">rolback</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="row">
+                <div class="col-xl-4 col-md-4 col-sm-6 d-flex flex-column">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#syncslip">syncslip</button>
+                </div>
+                <div class="col-xl-4 col-md-4 col-sm-6 d-flex flex-column">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#syncstatememnt">syncstatememnt</button>
+                </div>
+                <div class="col-xl-4 col-md-4 col-sm-6 d-flex flex-column">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                        data-bs-target="#syncmaster">syncmaster</button>
+                </div>
+            </div>
+            <!-- The Modal -->
+            <div class="modal" id="syncslip">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                        <!-- Modal Header -->
+                        @if (isProcessing == true)
+                        {
+                            <div class="overlay">
+                                <div class="child">
+                                    <div class="spinner-border" role="status">
+                                   
+                                </div>
+                                </div>
+                                
+                            </div>
+                        }
+                        else
+                        {
+                                <RadzenDataGrid @bind-Value=@selectedItems Data="@data" TItem="IDictionary<string, object>"
+                                    ColumnWidth="200px" AllowFiltering="true"
+                                    FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterMode="FilterMode.Advanced"
+                                    AllowPaging="true" AllowSorting="true">
+                                    <Columns>
+                                        @foreach (var column in columns)
+                                        {
+                                            <RadzenDataGridColumn TItem="IDictionary<string, object>" Title="@column.Key"
+                                                Type="column.Value"
+                                                Property="@GetColumnPropertyExpression(column.Key, column.Value)">
+                                                <Template>
+                                                    @context[@column.Key]
+                                                </Template>
+                                            </RadzenDataGridColumn>
+                                        }
+                                    </Columns>
+                                </RadzenDataGrid>   
+                        }
+                        <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    @* <button type="button" class="btn btn-secondary" @onclick="Prosess">ประมวลผล</button>
+                                *@
+                                    <button type="button" class="btn btn-secondary"@onclick="Reset">ประมวลผล</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                                @* } *@
+                            </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="syncstatememnt">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                    <label class="form-label" for="">ชื่อ</label>
+                                    <div class="form-group ">
+                                        <div class="input-group">
+                                            @* <input class="form-control" type="text" name="emp_name"
+                                            @bind="emp_name">
+                                            *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                    <label class="form-label" for="">นามสกุล</label>
+                                    <div class="form-group ">
+                                        <div class="input-group">
+                                            @* <input class="form-control" type="text"
+                                            name="emp_surname"@bind="emp_surname"> *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-6 col-sm-6 d-flex flex-column">
+                                    @* <button type="button" class="btn
+                                    btn-outline-secondary"@onclick="SearchModals">ค้นหา</button> *@
+                                </div>
+                            </div>
+                            @* @if (employeeData != null)
+                            { *@
+                            <table id="example" class="table mt-2" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>เลขที่สมาชิก</th>
+                                        <th>ชื่อ</th>
+                                        <th>นามสกุล</th>
+                                        <th>ชื่อเล่น</th>
+                                        <th>เลขบัตรประชาชน</th>
+                                    </tr>
+                                </thead>
+                                @* @foreach (var Itemmodal in employeeData)
+                                {
+                                <tbody>
+                                <tr>
+                                <td><a style="cursor: pointer;"
+                                @onclick="() => OpenModal(Itemmodal.emp_no)">@Itemmodal.emp_no</a></td>
+                                <td>@Itemmodal.emp_name</td>
+                                <td>@Itemmodal.emp_surname</td>
+                                <td>@Itemmodal.emp_nickname</td>
+                                <td>@Itemmodal.id_card</td>
+                                </tr>
+                                </tbody>
+                                } *@
+                            </table>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            @* } *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="syncmaster">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                    <label class="form-label" for="">ชื่อ</label>
+                                    <div class="form-group ">
+                                        <div class="input-group">
+                                            @* <input class="form-control" type="text" name="emp_name"
+                                            @bind="emp_name">
+                                            *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                    <label class="form-label" for="">นามสกุล</label>
+                                    <div class="form-group ">
+                                        <div class="input-group">
+                                            @* <input class="form-control" type="text"
+                                            name="emp_surname"@bind="emp_surname"> *@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-md-6 col-sm-6 d-flex flex-column">
+                                    @* <button type="button" class="btn
+                                    btn-outline-secondary"@onclick="SearchModals">ค้นหา</button> *@
+                                </div>
+                            </div>
+                            @* @if (employeeData != null)
+                            { *@
+                            <table id="example" class="table mt-2" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>เลขที่สมาชิก</th>
+                                        <th>ชื่อ</th>
+                                        <th>นามสกุล</th>
+                                        <th>ชื่อเล่น</th>
+                                        <th>เลขบัตรประชาชน</th>
+                                    </tr>
+                                </thead>
+                                @* @foreach (var Itemmodal in employeeData)
+                                {
+                                <tbody>
+                                <tr>
+                                <td><a style="cursor: pointer;"
+                                @onclick="() => OpenModal(Itemmodal.emp_no)">@Itemmodal.emp_no</a></td>
+                                <td>@Itemmodal.emp_name</td>
+                                <td>@Itemmodal.emp_surname</td>
+                                <td>@Itemmodal.emp_nickname</td>
+                                <td>@Itemmodal.id_card</td>
+                                </tr>
+                                </tbody>
+                                } *@
+                            </table>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                            @* } *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mt-3">
+    <RadzenDataGrid @bind-Value=@selectedItems Data="@data" TItem="IDictionary<string, object>" ColumnWidth="200px"
+        AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterMode="FilterMode.Advanced"
+        AllowPaging="true" AllowSorting="true">
+        <Columns>
+            @foreach (var column in columns)
+            {
+                <RadzenDataGridColumn TItem="IDictionary<string, object>" Title="@column.Key" Type="column.Value"
+                    Property="@GetColumnPropertyExpression(column.Key, column.Value)">
+                    <Template>
+                        @context[@column.Key]
+                    </Template>
+                </RadzenDataGridColumn>
+            }
+        </Columns>
+    </RadzenDataGrid>
+</div>
+@code {
+    RadzenDataGrid<Detail> grid;
+    List<Detail> employees;
+    async Task Reset()
+    {
+        grid.Reset(true); 
+        await grid.FirstPage(true);
+    }
+}
+@code {
+    private string processingMessage = "";
+    private bool isProcessing = false;
+
+    private async Task DelayedProsess()
+    {
+        // กำหนดเป็น true เพื่อบอกว่ากำลังประมวลผล
+        isProcessing = !isProcessing;
+
+        // โค้ดประมวลผลของคุณ
+        processingMessage = "Processing...";
+        Console.WriteLine(processingMessage);
+
+        // กำหนดเป็น false เมื่อประมวลผลเสร็จสิ้น
+    }
+}
+
+
+@code {
+    IList<IDictionary<string, object>> selectedItems;
+
+    public IEnumerable<IDictionary<string, object>> data { get; set; }
+
+    public IDictionary<string, Type> columns { get; set; }
+
+    public string GetColumnPropertyExpression(string name, Type type)
+    {
+        var expression = $@"it[""{name}""].ToString()";
+
+        if (type == typeof(int))
+        {
+            return $"int.Parse({expression})";
+        }
+        else if (type == typeof(DateTime))
+        {
+            return $"DateTime.Parse({expression})";
+        }
+
+        return expression;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        columns = new Dictionary<string, Type>()
+{
+{ "Coop_ID", typeof(int) },
+{ "PayOutSlip_No", typeof(string) },
+{ "Member_No", typeof(string) },
+{ "Slip_Date", typeof(DateTime) },
+};
+
+        @* foreach (var i in Enumerable.Range(0, 5))
+{
+columns.Add($"Column{i}", typeof(string));
+} *@
+
+        data = Enumerable.Range(0, 100).Select(i =>
+        {
+            var row = new Dictionary<string, object>();
+
+            foreach (var column in columns)
+            {
+                row.Add(column.Key, column.Value == typeof(int) ? i :
+    column.Value == typeof(DateTime) ? DateTime.Now.AddMonths(i) : $"{column.Key}{i}");
+            }
+
+            return row;
+        });
+    }
+}
+@code {
+    private List<Detail> datadetail;
+    private List<Recppaytype> recppaytype;
+    private List<Tofromacc> tofromacc;
+    private string deptaccount_no { get; set; }
+    private string coop_id = "065001";
+    private bool isLoading;
+    private async Task Search()
+    {
+        Console.WriteLine($"Received input: {deptaccount_no}");
+        if (string.IsNullOrEmpty(deptaccount_no))
+        {
+            // Handle the case where emp_no is empty
+            Console.WriteLine("Employee number is empty. No search performed.");
+            return;
+        }
+        try
+        {
+            isLoading = true;
+            var response = await
+            httpClient.GetAsync($"{Apiurl.ApibaseUrl}DepOfInitDataOffline?coopControl={coop_id}&deptaccountNo={deptaccount_no}");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var apiResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResponse>(json);
+            if (apiResponse.status)
+            {
+                datadetail = new List<Detail> { apiResponse.data };
+                Console.WriteLine($"API request failed: {datadetail}");
+            }
+            else
+            {
+                // Handle error case
+                Console.WriteLine($"API request failed: {apiResponse.message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    public class ApiResponse
+    {
+        public bool status { get; set; }
+        public Detail data { get; set; }
+        public string message { get; set; }
+    }
+    public class Recppaytype
+    {
+        public string recppaytype_code { get; set; }
+        public string recppaytype_desc { get; set; }
+        public string cash_type { get; set; }
+    }
+    public class Tofromacc
+    {
+        public string tofromacc_id { get; set; }
+        public string tofromacc_desc { get; set; }
+        public string cash_type { get; set; }
+    }
+
+    public class Detail
+    {
+        public string coop_id { get; set; }
+        public string memcoop_id { get; set; }
+        public string member_no { get; set; }
+        public string membcat_code { get; set; }
+        public string deptaccount_no { get; set; }
+        public string deptaccount_name { get; set; }
+        public string dept_objective { get; set; }
+        public string depttype_desc { get; set; }
+        public string deptgroup_code { get; set; }
+        public string moneytype_code { get; set; }
+        public string bank_code { get; set; }
+        public string entry_id { get; set; }
+        public string machine_id { get; set; }
+        public string cash_type { get; set; }
+        public List<Recppaytype> recppaytype { get; set; }
+        public List<Tofromacc> tofromacc { get; set; }
+        public DateTime operate_date { get; set; }
+        public string remark { get; set; }
+        public string entry_date { get; set; }
+        public string operate_code { get; set; }
+        public string sign_flag { get; set; }
+        public string laststmseq_no { get; set; }
+        public string deptitem_amt { get; set; }
+        public string fee_amt { get; set; }
+        public string oth_amt { get; set; }
+        public string prncbal { get; set; }
+        public string withdrawable_amt { get; set; }
+        public string prncbal_retire { get; set; }
+
+    }
+
+}

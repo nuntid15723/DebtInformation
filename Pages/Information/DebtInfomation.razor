@@ -1,0 +1,508 @@
+@page "/debt/debtinformation"
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@* @using DebtInformation.Service *@
+@inject IJSRuntime jsRuntime
+@inject HttpClient httpClient
+@using System.Linq
+
+
+@using System.Linq.Dynamic.Core
+<style>
+    .icon-search {
+        display: inline-flex !important;
+        justify-content: space-evenly !important;
+        align-items: center !important;
+        position: relative !important;
+        top: 3px !important;
+        padding: 15px !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .mt-5 {
+        margin-top: 4rem !important;
+    }
+
+   .modal-lg,.modal-xl {
+  width: 1000px !important;
+}
+
+</style>
+<div class="header-page mt-5">
+    <h4>ระบบ การซิงค์ข้อมูลหุ้นหนี้ - ข้อมูลหุ้น</h4>
+</div>
+<div class="card mt-3">
+    <div class="row" style="margin-left: calc(var(--bs-gutter-x) * .5);margin-bottom: 15px;">
+        <div class="row">
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <label class="form-label" for="">วันที่ผ่านรายการ</label>
+                <div class="form-group ">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="deptaccount_no" @bind="deptaccount_no">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <label class="form-label" for="">เลือกประเภทรายการ</label>
+                <select id="recppaytypeSelect" class="form-select" aria-label="Default select example">
+                    <option value="1">ข้อมูลหุ้น</option>
+                    <option value="2">ข้อมูลหนี้</option>
+                </select>
+            </div>
+            @* <div class="col-xl-3 col-md-4col-sm-6 d-flex flex-column">
+            <button type="button" class="btn btn-outline-secondary" @onclick="Datadetails">ป้อนคำขอกู้</button>
+            </div> *@
+            @* <div class="col-xl-2 col-md-4 col-sm-6 d-flex flex-column">
+            <button type="button" class="btn btn-outline-secondary" @onclick="Datadetails">เปลี่ยนแปลงหุ้นหนี้ และค้ำประกัน </button>
+            </div>
+            <div class="col-xl-2 col-md-4 col-sm-6 d-flex flex-column">
+            <button type="button" class="btn btn-outline-secondary" @onclick="Datadetails">ใบเปลี่ยนแปลงชำระหนี้ ตาม GDOC</button>
+            </div> *@
+            @* <div class="col-xl-1 col-md-4 col-sm-6 d-flex flex-column">
+            <button type="button" class="btn btn-outline-secondary" @onclick="Search">rolback</button>
+            </div> *@
+        </div>
+        <div class="row">
+             @* <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <label class="form-label" for="">เลือกประเภทรายการ</label>
+                <select id="synctypeSelect" class="form-select" aria-label="Default select example">
+                    <option value="0">select</option>
+                    <option value="1">ข้อมูลหุ้น</option>
+                    <option value="2">เปลี่ยนแปลงหุ้นหนี้ และค้ำประกัน</option>
+                    <option value="3">ข้อมูลหนี้</option>
+                    <option value="4">ข้อมูลหนี้</option>
+                    <option value="5">ข้อมูลหนี้</option>
+                </select>
+            </div> *@
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#syncslip" @onclick="Datadetails">เพิ่มสัญญาเงินกู้</button>
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#syncstatememnt" @onclick="Datadetails">เปลี่ยนแปลงหุ้นหนี้ และค้ำประกัน</button>
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" id="snyacc" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#snyacc">สมาชิก</button>
+            </div>
+              <div class="col-xl-3 col-md-4col-sm-6 d-flex flex-column">
+            <button type="button" class="btn btn-outline-secondary" @onclick="Datadetails">ป้อนคำขอกู้</button>
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#syncmaster">ดึง statement เงินกู้</button>
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 d-flex flex-column">
+                <button type="button" id="btsyncinsurance" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#syncinsurance">ดึง statement หุ้น</button>
+            </div>
+        </div>
+        <!-- The Modal -->
+        <div class="modal" id="syncslip">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    @if (IsLoading == true)
+                    {
+                        <div class="spinner"></div>
+                    }
+                    else
+                    {
+                        <div class="modal-header">
+                            <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            @* <RadzenDataGrid @bind-Value=@selectedItems Data="@data" TItem="IDictionary<string, object>"
+                        ColumnWidth="200px" AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand"
+                        FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true">
+                        <Columns>
+                        @foreach (var column in columns)
+                        {
+                        <RadzenDataGridColumn TItem="IDictionary<string, object>" Title="@column.Key"
+                        Type="column.Value"
+                        Property="@GetColumnPropertyExpression(column.Key, column.Value)">
+                        <Template>
+                        @context[@column.Key]
+                        </Template>
+                        </RadzenDataGridColumn>
+                        }
+                        </Columns>
+                        </RadzenDataGrid> *@
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @onclick="Prosess">ประมวลผล</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="syncstatememnt">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <RadzenDataGrid @ref="deptdetailGrid"  IsLoading=@isLoading AllowFiltering="true" AllowPaging="true"
+                            AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            Data="@datadetail" TItem="Models.Detail" ColumnWidth="200px" PageSize="4"
+                            ShowPagingSummary="true">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="Models.Detail" Property="coop_id" Title="COOP_ID">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="Models.Detail" Property="memcoop_id" Title="memcoop_id">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="Models.Detail" Property="member_no" Title="member_no">
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="Models.Detail" Property="deptaccount_name"
+                                    Title="deptaccount_name">
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @onclick="Prosessi">ประมวลผล</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        @* } *@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="syncmaster">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                <label class="form-label" for="">ชื่อ</label>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        @* <input class="form-control" type="text" name="emp_name"
+                                        @bind="emp_name">
+                                        *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                <label class="form-label" for="">นามสกุล</label>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        @* <input class="form-control" type="text"
+                                        name="emp_surname"@bind="emp_surname"> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6 col-sm-6 d-flex flex-column">
+                                @* <button type="button" class="btn
+                                btn-outline-secondary"@onclick="SearchModals">ค้นหา</button> *@
+                            </div>
+                        </div>
+                        @* @if (employeeData != null)
+                        { *@
+                        <table id="example" class="table mt-2" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>เลขที่สมาชิก</th>
+                                    <th>ชื่อ</th>
+                                    <th>นามสกุล</th>
+                                    <th>ชื่อเล่น</th>
+                                    <th>เลขบัตรประชาชน</th>
+                                </tr>
+                            </thead>
+                            @* @foreach (var Itemmodal in employeeData)
+                            {
+                            <tbody>
+                            <tr>
+                            <td><a style="cursor: pointer;"
+                            @onclick="() => OpenModal(Itemmodal.emp_no)">@Itemmodal.emp_no</a></td>
+                            <td>@Itemmodal.emp_name</td>
+                            <td>@Itemmodal.emp_surname</td>
+                            <td>@Itemmodal.emp_nickname</td>
+                            <td>@Itemmodal.id_card</td>
+                            </tr>
+                            </tbody>
+                            } *@
+                        </table>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        @* } *@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="syncinsurance">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">ข้อมูลสมาชิก</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                <label class="form-label" for="">ชื่อ</label>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        @* <input class="form-control" type="text" name="emp_name"
+                                        @bind="emp_name">
+                                        *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-sm-6 d-flex flex-column">
+                                <label class="form-label" for="">นามสกุล</label>
+                                <div class="form-group ">
+                                    <div class="input-group">
+                                        @* <input class="form-control" type="text"
+                                        name="emp_surname"@bind="emp_surname"> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-2 col-md-6 col-sm-6 d-flex flex-column">
+                                @* <button type="button" class="btn
+                                btn-outline-secondary"@onclick="SearchModals">ค้นหา</button> *@
+                            </div>
+                        </div>
+                        @* @if (employeeData != null)
+                        { *@
+                        <table id="example" class="table mt-2" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>เลขที่สมาชิก</th>
+                                    <th>ชื่อ</th>
+                                    <th>นามสกุล</th>
+                                    <th>ชื่อเล่น</th>
+                                    <th>เลขบัตรประชาชน</th>
+                                </tr>
+                            </thead>
+                            @* @foreach (var Itemmodal in employeeData)
+                            {
+                            <tbody>
+                            <tr>
+                            <td><a style="cursor: pointer;"
+                            @onclick="() => OpenModal(Itemmodal.emp_no)">@Itemmodal.emp_no</a></td>
+                            <td>@Itemmodal.emp_name</td>
+                            <td>@Itemmodal.emp_surname</td>
+                            <td>@Itemmodal.emp_nickname</td>
+                            <td>@Itemmodal.id_card</td>
+                            </tr>
+                            </tbody>
+                            } *@
+                        </table>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        @* } *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mt-3">
+    @* <RadzenDataGrid @bind-Value=@selectedItems Data="@data" TItem="IDictionary<string, object>" ColumnWidth="200px"
+    AllowFiltering="true" FilterPopupRenderMode="PopupRenderMode.OnDemand" FilterMode="FilterMode.Advanced"
+    AllowPaging="true" AllowSorting="true">
+    <Columns>
+    @foreach (var column in columns)
+    {
+    <RadzenDataGridColumn TItem="IDictionary<string, object>" Title="@column.Key" Type="column.Value"
+    Property="@GetColumnPropertyExpression(column.Key, column.Value)">
+    <Template>
+    @context[@column.Key]
+    </Template>
+    </RadzenDataGridColumn>
+    }
+    </Columns>
+    </RadzenDataGrid> *@
+</div>
+
+<script>
+    document.getElementById("btsyncinsurance").style.display = "none"; // ตั้งค่าให้ปุ่มซ่อนเสมอแรก
+
+    document.getElementById("recppaytypeSelect").addEventListener("change", function () {
+        var selectedValue = this.value;
+
+        if (selectedValue === "2") {
+            document.getElementById("btsyncinsurance").style.display = "block";
+        } else if (selectedValue === "1") {
+            document.getElementById("btsyncinsurance").style.display = "none";
+        }
+    });
+</script>
+@* <script>
+    // เพิ่ม Event Listener สำหรับเปลี่ยนแปลงใน dropdown
+    document.getElementById("synctypeSelect").addEventListener("change", function () {
+        var selectedValue = this.value;
+
+        // ตรวจสอบค่าที่ถูกเลือก
+        if (selectedValue === "1") {
+            $('#syncslip').modal('show'); // เรียกใช้ Modal
+        } else if (selectedValue === "1") {
+            $('#syncstatememnt').modal('show'); // เรียกใช้ Modal
+        } else if (selectedValue === "2") {
+            $('#syncmaster').modal('show'); // เรียกใช้ Modal
+        } else if (selectedValue === "3") {
+            $('#syncinsurance').modal('show'); // เรียกใช้ Modal
+        } else if (selectedValue === "4") {
+            $('#syncslip').modal('show'); // เรียกใช้ Modal
+        } else if (selectedValue === "5") {
+            $('#syncslip').modal('show'); // เรียกใช้ Modal
+        }
+    });
+</script> *@
+@code {
+    private void HandleSelection(ChangeEventArgs e)
+    {
+        var selectedValue = e.Value.ToString();
+
+        // เรียกใช้ JavaScript Interop เพื่อเรียกใช้ Modal ตามเงื่อนไข
+        if (selectedValue == "1")
+        {
+            jsRuntime.InvokeVoidAsync("showModal", "syncslip");
+        }
+        else if (selectedValue == "2")
+        {
+            jsRuntime.InvokeVoidAsync("showModal", "syncstatememnt");
+        }
+        // เพิ่มเงื่อนไขอื่น ๆ ตามต้องการ
+    }
+}
+@code {
+     async Task Prosessi()
+    {isLoading = true;
+        @* try{
+            isLoading = true;
+        }catch(Exception e){
+            
+        }finally{
+            isLoading = false;
+        } *@
+       
+    }
+    RadzenDataGrid<Models.Detail> deptdetailGrid;
+    List<Models.Detail> datadetail;
+    private List<Models.Recppaytype> recppaytype;
+    private List<Models.Tofromacc> tofromacc;
+    private string deptaccount_no { get; set; }
+    private string operdate { get; set; }
+    private string coop_id = "065001";
+    private bool isLoading;
+    private async Task Datadetails()
+    {
+        try
+        {
+            isLoading = true;
+            var response = await
+            httpClient.GetAsync($"{Apiurl.ApibaseUrl}DepOfInitDataOffline?coop_Control={coop_id}&deptaccount_No={deptaccount_no}");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var apiResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.ApiResponse>(json);
+            if (apiResponse.status)
+            {
+                datadetail = new List<Models.Detail> { apiResponse.data };
+                Console.WriteLine($"API request failed: {datadetail}");
+            }
+            else
+            {
+                // Handle error case
+                Console.WriteLine($"API request failed: {apiResponse.message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+    private async Task Cnvlistreqloancoll()
+    {
+        try
+        {
+            var response = await httpClient.GetAsync($"{Apiurl.Apibase}slmbnewtoold_CGD?dateTime={operdate}");
+            response.EnsureSuccessStatusCode();
+            var data = await response.Content.ReadAsStringAsync();
+            ProcessResponse(data);
+            Console.WriteLine($"API request successful: {data}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"API request failed: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+    private Models.Informations Item = new Models.Informations();
+    private void ProcessResponse(string data)
+    {
+        try
+        {
+            var item = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Informations>(data);
+        
+            if (item != null)
+            {
+                Item.status = item.status;
+            }
+            else
+            {
+                Console.WriteLine($"Failed to deserialize data to JSON object: {data}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deserializing JSON: {ex.Message}");
+        }
+    }
+}
+@code {
+    private List<Employeee> employeee;
+    public bool IsLoading = false;
+    private async Task Prosess()
+    {
+        IsLoading = true;
+        // Simulate a 1-second delay
+        await Task.Delay(1000);
+
+        @* IsLoading = false; *@
+    }
+    public class Employeee
+    {
+        public string coop_id { get; set; }
+        public string memcoop_id { get; set; }
+        public string member_no { get; set; }
+        public string membcat_code { get; set; }
+        public string deptaccount_no { get; set; }
+        public string deptaccount_name { get; set; }
+        public string dept_objective { get; set; }
+        public string depttype_desc { get; set; }
+    }
+
+}

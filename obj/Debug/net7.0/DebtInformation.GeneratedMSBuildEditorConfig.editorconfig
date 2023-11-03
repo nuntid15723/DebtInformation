@@ -1,0 +1,85 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DebtInformation
+build_property.RootNamespace = DebtInformation
+build_property.ProjectDir = D:\work\Icoop\DonNet\New folder\DebtInformation\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\work\Icoop\DonNet\New folder\DebtInformation
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/DebtInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGVidEluZm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/FetchData.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Shared/Sidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNpZGViYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Information/DebtInfo.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb3JtYXRpb25cRGVidEluZm8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-uoa2bjj3xn
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Information/DebtInfomation.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb3JtYXRpb25cRGVidEluZm9tYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-nnzldr7ur8
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Information/Infomation_cgd.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb3JtYXRpb25cSW5mb21hdGlvbl9jZ2QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-tochoidvaq
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Information/Infomation_egat.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb3JtYXRpb25cSW5mb21hdGlvbl9lZ2F0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-10ehrl1cml
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Information/Information.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5mb3JtYXRpb25cSW5mb3JtYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-drk07fu350
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-7uhnco565w
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-fic93ga0ln
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/work/Icoop/DonNet/New folder/DebtInformation/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

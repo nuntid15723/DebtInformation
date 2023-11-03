@@ -1,0 +1,240 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: gainsboro;
+}
+
+
+.text-button {
+    border: none; /* ลบเส้นขอบ */
+    background-color: transparent; /* ลบพื้นหลัง */
+    font-family: Arial, sans-serif; /* เลือกแบบอักษรตามต้องการ */
+    font-size: 16px; /* ปรับขนาดตัวอักษร */
+    color: black; /* เลือกสีตัวอักษร */
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นรูปแบบของปุ่ม */
+}
+
+#row {
+    display: flex;
+    align-items: center;
+}
+
+#container {
+    display: flex;
+}
+
+#header {
+    background-color: white;
+    height: 8vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+    #header img {
+        margin-left: 20px;
+        margin-right: 27px;
+    }
+
+#header-content {
+    margin-right: auto;
+}
+
+#header p {
+    margin: 0;
+}
+
+
+
+#logout-button {
+    background-color: #cf4c4c;
+    color: #fff;
+    border: none;
+    height: 5vh;
+    width: 10%;
+    display: flex;
+    align-items: center;
+}
+
+    #logout-button img {
+        margin-right: 5px;
+    }
+
+nav {
+    position: relative;
+    width: 360px;
+}
+
+    nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        nav ul li {
+            /* Sub Menu */
+        }
+
+            nav ul li a {
+                display: block;
+                padding: 10px 15px;
+                color: #000000;
+                text-decoration: none;
+                -webkit-transition: 0.2s linear;
+                -moz-transition: 0.2s linear;
+                -o-transition: 0.2s linear;
+                transition: 0.2s linear;
+            }
+
+                nav ul li a:hover {
+                    background-color: cornflowerblue;
+                }
+
+                nav ul li a .fa {
+                    color: black;
+                    width: 16px;
+                    text-align: center;
+                    margin-right: 5px;
+                    float: right;
+                }
+
+        nav ul ul {
+            background-color: white;
+            padding: 10px;
+        }
+
+        nav ul li ul li a {
+            background-color: lavender;
+            margin-bottom: 10px;
+            border-left: 4px solid transparent;
+            padding: 10px 20px;
+        }
+
+            nav ul li ul li a:hover {
+                border-left: 4px solid #3498db;
+            }
+
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.column {
+    flex-basis: 50%;
+    padding: 10px;
+}
+
+
+#sidebar-top {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    height: 13vh;
+    width: 360px;
+    background-color: white;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    height: 5vh;
+    width: 340px;
+    background-color: #f2f2f2;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#search-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.search-icon {
+    padding: 0 5px;
+}
+
+.text-button {
+    display: flex;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+.form-container {
+    width: 100%;
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+}
+
+.form-row {
+    display: flex;
+    align-items: end;
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.required-label {
+    color: firebrick;
+    margin-right: 5px;
+}
+
+.text-input {
+    width: 90%;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.long-text-input {
+    width: 90%;
+    margin-right: 5px;
+    height: 100px;
+}
+
+.radio-input {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.image-picker {
+    margin-right: 5px;
+}
+
+.time-picker {
+    margin-right: 5px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.reset-button {
+    margin-right: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.preview-button {
+    background-color: blue;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}

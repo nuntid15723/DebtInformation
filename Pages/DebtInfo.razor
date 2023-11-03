@@ -1,0 +1,114 @@
+@page "/information"
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+@using System.Linq.Dynamic.Core
+@using DebtInformation.Models
+@inject HttpClient httpClient
+
+
+<div class="header-page mt-5">
+    <h4>ระบบ การซิงค์ข้อมูลหุ้นหนี้ - ข้อมูลหุ้น</h4>
+</div>
+<div class="card mt-3">
+    <div class="row" style="margin-left: calc(var(--bs-gutter-x) * .5);margin-bottom: 15px;">
+        <div class="row">
+            @* <RadzenDataGrid @ref="employeeGrid" AllowFiltering="true" AllowPaging="true" AllowSorting="true"
+            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@employees"
+            TItem="Models.InfoModels" ColumnWidth="200px" PageSize="4" ShowPagingSummary="true">
+            <Columns>
+            <RadzenDataGridColumn TItem="Models.InfoModels" Property="coop_id" Title="COOP_ID">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Models.InfoModels" Property="memcoop_id" Title="memcoop_id">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Models.InfoModels" Property="member_no" Title="member_no">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Models.InfoModels" Property="deptaccount_name"
+            Title="deptaccount_name">
+            </RadzenDataGridColumn>
+            </Columns>
+            </RadzenDataGrid> *@
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#syncslip"
+                @onclick="Datadetails">syncslip
+            </button>
+            <RadzenDataGrid @ref="deptdetailGrid" IsLoading=@isLoading AllowFiltering="true" AllowPaging="true"
+                AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@datadetail"
+                TItem="Models.Detail" ColumnWidth="200px" PageSize="4" ShowPagingSummary="true">
+                <Columns>
+                    <RadzenDataGridColumn TItem="Models.Detail" Property="coop_id" Title="COOP_ID">
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Models.Detail" Property="memcoop_id" Title="memcoop_id">
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Models.Detail" Property="member_no" Title="member_no">
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="Models.Detail" Property="deptaccount_name" Title="deptaccount_name">
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+            <RadzenButton Text="Reset" Click="@Reset" Style="margin-bottom: 20px;" />
+        </div>
+    </div>
+</div>
+@code {
+
+    RadzenDataGrid<Models.InfoModels> employeeGrid;
+    List<Models.InfoModels> employees = new List<Models.InfoModels>()
+{
+new Models.InfoModels { coop_id = "1", memcoop_id = "ntre1", member_no = "123", deptaccount_name = "pptyas1" },
+new Models.InfoModels { coop_id = "2", memcoop_id = "ntre2", member_no = "1234", deptaccount_name = "pptyas2" },
+new Models.InfoModels{ coop_id = "3", memcoop_id = "ntre3", member_no = "12345", deptaccount_name = "pptyas3" },
+new Models.InfoModels{ coop_id = "4", memcoop_id = "ntre4", member_no = "123456", deptaccount_name = "pptyas4" },
+new Models.InfoModels{ coop_id = "5", memcoop_id = "ntre5", member_no = "1234567", deptaccount_name = "pptyas5" },
+};
+
+
+    public class Employee
+    {
+        public string? coop_id { get; set; }
+        public string? memcoop_id { get; set; }
+        public string? member_no { get; set; }
+        public string? deptaccount_name { get; set; }
+    }
+}
+@code {
+    async Task Reset()
+    {
+        isLoading = true;
+    }
+
+    RadzenDataGrid<Models.Detail> deptdetailGrid;
+    List<Models.Detail> datadetail;
+    private string deptaccount_no = "1000051044";
+    private string coop_id = "065001";
+    private bool isLoading;
+    private async Task Datadetails()
+    {
+        try
+        {
+            isLoading = true;
+            var response = await
+            httpClient.GetAsync($"{Apiurl.ApibaseUrl}DepOfInitDataOffline?coop_Control={coop_id}&deptaccount_No={deptaccount_no}");
+            response.EnsureSuccessStatusCode();
+
+            var json = await response.Content.ReadAsStringAsync();
+            var apiResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.ApiResponse>(json);
+            if (apiResponse.status)
+            {
+                datadetail = new List<Models.Detail> { apiResponse.data };
+                Console.WriteLine($"API request failed: {datadetail}");
+            }
+            else
+            {
+                // Handle error case
+                Console.WriteLine($"API request failed: {apiResponse.message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

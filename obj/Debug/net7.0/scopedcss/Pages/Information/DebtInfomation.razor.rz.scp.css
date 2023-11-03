@@ -1,0 +1,121 @@
+.form-check[b-nnzldr7ur8] {
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 1.5em;
+  margin-bottom: 0.125rem;
+  margin-top: 0.8rem;
+}
+
+.flex-column[b-nnzldr7ur8] {
+  flex-direction: column !important;
+  padding: 5px !important;
+}
+
+.lable-heard[b-nnzldr7ur8] {
+  display: inline-block;
+  margin-top: 5px;
+  color: red;
+  margin-left: calc(var(--bs-gutter-x) * -0.5);
+}
+
+.form-label[b-nnzldr7ur8] {
+  margin-bottom: 0.1rem;
+  margin-top: 5px;
+}
+
+.profile-pic[b-nnzldr7ur8] {
+  padding: 10px;
+}
+
+.profile-pic img[b-nnzldr7ur8] {
+  border-radius: 8%;
+  box-shadow: 0px 0px 5px 0px #c1c1c1;
+  cursor: pointer;
+  width: 250px;
+  height: 250px;
+}
+
+.btn.btn-outline-secondary[b-nnzldr7ur8] {
+  margin-top: 5px;
+}
+
+.separator[b-nnzldr7ur8] {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.separator .line[b-nnzldr7ur8] {
+  height: 1px;
+  flex: 1;
+  background-color: #000;
+  margin: 0 0 0 0;
+}
+
+.separator .liner[b-nnzldr7ur8] {
+  height: 1px;
+  flex: 0.09;
+  background-color: #000;
+  left: 1px;
+}
+
+.separator span[b-nnzldr7ur8] {
+  position: relative;
+  top: 3px;
+  padding: 0 0.5rem;
+  color: #ff0000;
+}
+
+.hr-icon[b-nnzldr7ur8] {
+  position: relative;
+  top: 3px;
+  color: #ff0000;
+}
+
+@media (min-width: 1200px) {
+  .profile-pic[b-nnzldr7ur8] {
+    position: absolute;
+    top: 0px;
+    z-index: 50;
+    margin-top: 55px;
+  }
+
+  .btn.btn-outline-secondary[b-nnzldr7ur8] {
+    margin-top: 30px;
+  }
+}
+
+.row .mt-button[b-nnzldr7ur8] {
+  margin-top: -35px;
+}
+
+@media (min-width: 577px) {
+  .btn.btn-outline-secondary[b-nnzldr7ur8] {
+    margin-top: 30px;
+  }
+
+  .row .mt-button[b-nnzldr7ur8] {
+    margin-top: -35px;
+  }
+}
+.spinner[b-nnzldr7ur8] {
+  border: 16px solid silver;
+  border-top: 16px solid #337ab7;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin-b-nnzldr7ur8 700ms linear infinite;
+  top: 40%;
+  left: 55%;
+  position: absolute;
+}
+
+@keyframes spin-b-nnzldr7ur8 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

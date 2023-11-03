@@ -1,0 +1,207 @@
+/* .page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.sidebar {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+    .top-row ::deep a, .top-row .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+@media (max-width: 640.98px) {
+    .top-row:not(.auth) {
+        display: none;
+    }
+
+    .top-row.auth {
+        justify-content: space-between;
+    }
+
+    .top-row a, .top-row .btn-link {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .top-row, article {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+} */
+#header {
+    background-color: white;
+    height: 8vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+#header img {
+    margin-left: 20px;
+    margin-right: 27px;
+}
+
+#header-content {
+    margin-right: auto;
+}
+
+#header p {
+    margin: 0;
+}
+
+#logout-button {
+    background-color: #cf4c4c;
+    color: #fff;
+    border: none;
+    height: 5vh;
+    width: 10%;
+    display: flex;
+    align-items: center;
+}
+
+#logout-button img {
+    margin-right: 5px;
+}
+
+#container {
+    display: flex;
+}
+
+#content {
+    padding: 20px;
+    width: 90%;
+    height: 90vh;
+    background-color: white;
+    margin-left: 10px;
+}
+
+#content h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+#content-sidebar {
+    width: 450px;
+    height: 375px;
+}
+
+#sidebar-top {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    height: 13vh;
+    width: 360px;
+    background-color: white;
+}
+
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.sidebar {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.top-row ::deep a,
+.top-row .btn-link {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+}
+
+.top-row a:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#nav-bar {
+    transition: transform 0.3s ease-in-out;
+}
+
+#header-toggle {
+    transition: transform 0.3s ease-in-out;
+}
+
+#body-pd {
+    transition: padding-left 0.3s ease-in-out;
+}
+
+#header {
+    transition: padding-left 0.3s ease-in-out;
+}
+
+#header-toggle {
+    font-size: 2.5rem;
+}
+
+.nav-right {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-right: 5px;
+    padding-left: 5px;
+
+}
+
+@media(max-width: 511px) {
+
+    #header-content-img,
+    #header-content-text {
+        margin-left: 0;
+        text-align: center;
+    }
+}

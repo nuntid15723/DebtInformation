@@ -1,0 +1,173 @@
+body {
+    background-color: #f2f2f2;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.column {
+    float: left;
+}
+
+.left {
+    width: 3%;
+}
+
+.middle {
+    width: 35%;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-right: 2px solid lightgray;
+}
+
+.right {
+    width: 40%;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .row h2 {
+        color: black;
+        font-size: 18px;
+        font-family: 'Bahnschrift SemiLight', sans-serif;
+    }
+
+    .row h3 {
+        color: black;
+        font-size: 18px;
+        font-family: 'Arial Rounded MT Bold';
+    }
+.label {
+    color: #848484;
+    font-size: 16px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 20px;
+}
+
+
+    .form-group label {
+        width: auto;
+        margin-right: 5px;
+        font-size: 16px;
+    }
+
+    .form-group input {
+        padding: 7px;
+        font-size: 1em;
+        width: 300px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding-left: 25px;
+        background: url("https://img.icons8.com/?size=512&id=15265&format=png") no-repeat left;
+        background-size: 20px;
+        background-color: white;
+        
+    }
+
+.form-group2 {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 20px;
+}
+
+    .form-group2 label {
+     
+        width: auto;
+        margin-right: 5px;
+        font-size: 16px;
+    }
+
+.form-group2 input {
+    padding: 7px;
+    font-size: 1em;
+        width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+        padding-left: 25px;
+        background: url("https://img.icons8.com/?size=512&id=23206&format=png") no-repeat left;
+        background-size: 20px;
+        background-color: white;
+}
+.required {
+    color: red;
+    margin-right: 5px;
+}
+
+.btn-container button {
+    background-color: #337ab7;
+    color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    border: none;
+    font-size: 16px;
+    width: 30%;
+    cursor: pointer;
+}
+
+    .btn-container button:hover {
+        background-color: #2e6da4;
+    }
+
+.label-select {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    margin-bottom: 20px;    
+    margin-top: 20px;
+}
+
+    .label-select label {
+        width: auto;
+        margin-right: 5px;
+        margin-left: 5px;
+        font-size: 16px;
+    }
+
+    .label-select select {
+        padding: 5px;
+        font-size: 1em;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 335px;
+        padding-left: 25px;
+        background: url("https://img.icons8.com/?size=512&id=14323&format=png") no-repeat left;
+        background-size: 20px;
+        background-color: white
+    }
+
+    .footer label{
+        color: darkgray;
+    }
