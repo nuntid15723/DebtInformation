@@ -211,7 +211,7 @@
           }
         }
       },
-      "Radzen.Blazor/4.19.0": {
+      "Radzen.Blazor/4.20.0": {
         "type": "package",
         "dependencies": {
           "DartSassBuilder": "1.0.0",
@@ -695,10 +695,10 @@
         "packageIcon.png"
       ]
     },
-    "Radzen.Blazor/4.19.0": {
-      "sha512": "32h/fCmZ70nXf8yEMfaoNwXbL4fn6hPjf6w8XHYY49lKh4eYXHL0o5eirCFi6UWUpJrctinmUrB4DfmvITkXDQ==",
+    "Radzen.Blazor/4.20.0": {
+      "sha512": "8Y8ZbbW1KbTFTBtsofGO7gSlmZWDOzmjA8EuXyx3Y0Q422J7nhNNigi+igF7qR3qrib/jRxNFTZm2a9eJN8nQQ==",
       "type": "package",
-      "path": "radzen.blazor/4.19.0",
+      "path": "radzen.blazor/4.20.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -717,7 +717,7 @@
         "lib/net7.0/Radzen.Blazor.xml",
         "lib/netstandard2.1/Radzen.Blazor.dll",
         "lib/netstandard2.1/Radzen.Blazor.xml",
-        "radzen.blazor.4.19.0.nupkg.sha512",
+        "radzen.blazor.4.20.0.nupkg.sha512",
         "radzen.blazor.nuspec",
         "staticwebassets/Radzen.Blazor.js",
         "staticwebassets/css/dark-base.css",
@@ -969,7 +969,7 @@
   "projectFileDependencyGroups": {
     "net7.0": [
       "Newtonsoft.Json >= 13.0.3",
-      "Radzen.Blazor >= 4.19.0",
+      "Radzen.Blazor >= 4.20.0",
       "System.Net.Http.Json >= 7.0.1"
     ]
   },
@@ -1018,7 +1018,7 @@
           },
           "Radzen.Blazor": {
             "target": "Package",
-            "version": "[4.19.0, )"
+            "version": "[4.20.0, )"
           },
           "System.Net.Http.Json": {
             "target": "Package",
